@@ -1,0 +1,52 @@
+.loader-container {
+  width: 30%;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  margin: 20% auto 0;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.loader {
+  --color-1: #CDCDCD;
+  --color-2: #C4EAFF;
+  --size: 1px;
+
+  display: block;
+  position: relative;
+  height: calc(12 * var(--size));
+  width: 80%;
+  border: calc(1 * var(--size)) solid var(--color-1);
+  border-radius: calc(10 * var(--size));
+  overflow: hidden;
+}
+.loader::after {
+  content: '';
+  width: 40%;
+  height: 100%;
+  background: var(--color-2);
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  animation: animloader 2s linear infinite;
+}
+
+@keyframes animloader {
+  0% {
+    left: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    left: 100%;
+    transform: translateX(0%);
+  }
+}
+
