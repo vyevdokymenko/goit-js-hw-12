@@ -20,13 +20,21 @@
               required
             >
           </label>
-          <button type="submit" class="submit-button">Search</button>
+          <button type="submit" class="submit-button button">Search</button>
         </form>
       </section>
       <section class="results-section">
         <ul class="gallery"></ul>
-        <div class="loader-container">
+        <div class="loader-container hidden">
           <span class="loader"></span>
+        </div>
+        <div class="load-more-container">
+          <div class="load-more-display hidden">
+            <button class="load-more button">Load more</button>
+          </div>
+          <div class="end-of-search-display hidden">
+            <p class="end-of-search">We're sorry, but you've reached the end of search results.</p>
+          </div>
         </div>
       </section>
     </main>

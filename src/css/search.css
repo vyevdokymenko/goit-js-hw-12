@@ -27,7 +27,7 @@
   border: 1px solid #4e75ff;
 }
 
-.submit-button {
+.button {
   font: inherit;
   font-weight: 500;
   border: 0;
@@ -40,7 +40,11 @@
   width: 91px;
 }
 
-.submit-button:hover {
+.load-more {
+  width: 125px;
+}
+
+.button:hover {
   background: #6c8cff;
 }
 

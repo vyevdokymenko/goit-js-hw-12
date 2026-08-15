@@ -1,17 +1,26 @@
-.loader-container {
-  width: 30%;
+.loader-container, .load-more-container {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+  align-items: center;
+  text-align: center;
+  padding-top: 32px;
+}
+
+.hidden {
+  height: 0;
+  overflow: hidden;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  display: flex;
-  justify-content: center;
-  margin: 20% auto 0;
+  position: absolute;
+  top: -5000px;
 }
 
-.visible {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+.load-more-display, .end-of-search-display {
+  margin-top: 32px;
 }
 
 .loader {
