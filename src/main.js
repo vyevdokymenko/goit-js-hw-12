@@ -1,18 +1,21 @@
-import {getImagesByQuery, getNextPage, getSavedSearch, IMAGES_PER_PAGE, isNewSearch} from './js/pixabay-api.js';
+import {getImagesByQuery, IMAGES_PER_PAGE} from './js/pixabay-api.js';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import spriteUrl from './img/sprite.svg';
 import {
   clearGallery,
-  createGallery,
+  createGallery, hideEndOfSearchText,
   hideLoader,
-  hideLoadMoreButton,
+  hideLoadMoreButton, showEndOfSearchText,
   showLoader,
   showLoadMoreButton
 } from './js/render-functions.js';
 
-const form = document.querySelector('form');
-const loadMoreButton = document.querySelector('.load-more');
+const form = document.querySelector('.search-form');
+const loadMoreButton = document.querySelector('.load-more-button');
+
+let page = 1;
+let searchQuery = '';
 
 const showError = message => {
   iziToast.show({
@@ -39,54 +42,72 @@ const showError = message => {
   });
 };
 
-const renderGallery = async (searchText) => {
+const renderGallery = async (query) => {
   try {
+    hideLoadMoreButton();
+    hideEndOfSearchText();
     showLoader();
-    let nextPage = getNextPage(searchText);
-    const data = await getImagesByQuery(searchText, nextPage);
+
+    const data = await getImagesByQuery(query, page);
     const images = data.hits;
+
+    hideLoader();
+
     if (images.length === 0) {
-      hideLoader();
       showError('Sorry, there are no images matching your search query. Please try again!');
       return;
     }
-    hideLoader();
+
     createGallery(images);
-    const isShowLoadMore = data.totalHits > nextPage * IMAGES_PER_PAGE;
-    if (isShowLoadMore) {
+
+    const hasMoreResults = data.totalHits > page * IMAGES_PER_PAGE;
+    if (hasMoreResults) {
       showLoadMoreButton();
     } else {
-      hideLoadMoreButton();
+      showEndOfSearchText();
     }
+
+    page++;
   } catch (error) {
     hideLoader();
     showError(error.message);
-  } finally {
-    form.reset();
   }
 }
+
+const scrollGallery = () => {
+  const galleryItem = document.querySelector('.gallery-item');
+  const { height } = galleryItem.getBoundingClientRect();
+
+  window.scrollBy({
+    top: height * 2,
+    behavior: 'smooth',
+  });
+};
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
 
-  const searchText = form.elements['search-text'].value.trim();
+  const searchText = form.elements['search-input'].value.trim().toLowerCase();
+
   if (!searchText) {
     hideLoader();
     form.reset();
     return;
   }
 
-  if (isNewSearch(searchText)) {
+  const isNewSearch = searchText !== searchQuery;
+  if (isNewSearch) {
+    page = 1;
     clearGallery();
   }
-
-  await renderGallery(searchText);
+  searchQuery = searchText;
+  await renderGallery(searchQuery);
+  form.reset();
 });
+
 
 loadMoreButton.addEventListener('click', async e => {
   e.preventDefault();
-  let savedSearch = getSavedSearch();
-  if (savedSearch) {
-    await renderGallery(savedSearch);
-  }
+  await renderGallery(searchQuery);
+  scrollGallery();
 });

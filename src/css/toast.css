@@ -1,0 +1,8 @@
+.snackbar-toast {
+  border-radius: 4px;
+}
+
+.snackbar-toast .iziToast-close {
+  background-size: 16px 16px;
+  filter: brightness(0) invert(1);
+}
