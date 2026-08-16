@@ -11,7 +11,7 @@ import {
   showLoadMoreButton
 } from './js/render-functions.js';
 
-const form = document.querySelector('.search-form');
+const form = document.querySelector('.form');
 const loadMoreButton = document.querySelector('.load-more-button');
 
 let page = 1;
