@@ -42,6 +42,13 @@ const showError = message => {
   });
 };
 
+const showEndOfSearchNotification = () => {
+  iziToast.show({
+    message: "We're sorry, but you've reached the end of search results.",
+    position: 'topRight',
+  });
+};
+
 const renderGallery = async (query) => {
   try {
     hideLoadMoreButton();
@@ -65,6 +72,7 @@ const renderGallery = async (query) => {
       showLoadMoreButton();
     } else {
       showEndOfSearchText();
+      showEndOfSearchNotification();
     }
 
     page++;
@@ -76,7 +84,7 @@ const renderGallery = async (query) => {
 
 const scrollGallery = () => {
   const galleryItem = document.querySelector('.gallery-item');
-  const { height } = galleryItem.getBoundingClientRect();
+  const {height} = galleryItem.getBoundingClientRect();
 
   window.scrollBy({
     top: height * 2,
@@ -95,11 +103,9 @@ form.addEventListener('submit', async e => {
     return;
   }
 
-  const isNewSearch = searchText !== searchQuery;
-  if (isNewSearch) {
-    page = 1;
-    clearGallery();
-  }
+  page = 1;
+  clearGallery();
+
   searchQuery = searchText;
   await renderGallery(searchQuery);
   form.reset();
